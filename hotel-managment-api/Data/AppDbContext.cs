@@ -1,0 +1,16 @@
+using Microsoft.EntityFrameworkCore;
+using hotel_managment_api.Models;
+
+namespace hotel_managment_api.Data   // change to your project namespace
+{
+    public class AppDbContext : DbContext
+    {
+        public AppDbContext(DbContextOptions<AppDbContext> options)
+            : base(options)
+        {
+            
+        }
+        public DbSet<User> Users { get; set; }
+        public DbSet<Product> Products { get; set; }
+    }
+}

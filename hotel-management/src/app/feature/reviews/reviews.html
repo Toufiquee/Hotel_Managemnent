@@ -1,0 +1,44 @@
+<div class="reviews-container">
+  <div class="reviews-header">
+    <h1>⭐ Customer Reviews</h1>
+    <p class="tagline">See what our guests are saying</p>
+  </div>
+
+  <div class="rating-summary">
+    <div class="overall-rating">
+      <span class="big-rating">4.8</span>
+      <div class="stars">
+        @for (star of [1,2,3,4,5]; track star) {
+          <span class="star">★</span>
+        }
+      </div>
+      <p>Based on 150+ reviews</p>
+    </div>
+  </div>
+
+  <div class="reviews-grid">
+    @for (review of reviews; track review.id) {
+      <div class="review-card">
+        <div class="review-header">
+          <div class="reviewer-avatar">{{ review.name.charAt(0) }}</div>
+          <div class="reviewer-info">
+            <h3>{{ review.name }}</h3>
+            <div class="review-rating">
+              @for (star of getStarArray(review.rating); track star) {
+                <span class="star">★</span>
+              }
+            </div>
+          </div>
+          <span class="review-date">{{ review.date }}</span>
+        </div>
+        <p class="review-comment">"{{ review.comment }}"</p>
+      </div>
+    }
+  </div>
+
+  <div class="reviews-cta">
+    <h2>Had a great experience?</h2>
+    <p>We'd love to hear from you! Share your feedback and help us improve.</p>
+    <button class="cta-button">Write a Review</button>
+  </div>
+</div>

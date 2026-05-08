@@ -1,0 +1,105 @@
+/* Page background */
+body {
+  background: 
+    linear-gradient(rgba(0,0,0,0.65), rgba(0,0,0,0.75)),
+    url('https://images.unsplash.com/photo-1414235077428-338989a2e8c0');
+  background-size: cover;
+  background-position: center;
+  background-attachment: fixed;
+  font-family: 'Poppins', sans-serif;
+}
+
+/* Form container */
+form {
+  width: 360px;
+  margin: 60px auto;
+  padding: 25px 30px;
+  background: #ffffff;
+  border-radius: 10px;
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.15);
+}
+
+/* Labels */
+label {
+  display: block;
+  margin-top: 12px;
+  margin-bottom: 5px;
+  font-weight: 600;
+  color: #333;
+}
+
+/* Inputs & select */
+input,
+select {
+  width: 100%;
+  padding: 9px 12px;
+  border-radius: 6px;
+  border: 1px solid #ccc;
+  font-size: 14px;
+  transition: all 0.3s ease;
+}
+
+/* Focus effect */
+input:focus,
+select:focus {
+  border-color: #667eea;
+  outline: none;
+  box-shadow: 0 0 6px rgba(102, 126, 234, 0.4);
+}
+
+/* Checkbox alignment */
+input[type="checkbox"] {
+  width: auto;
+  margin-right: 6px;
+}
+
+/* Error messages */
+div {
+  font-size: 12px;
+  color: #e74c3c;
+  margin-top: 4px;
+}
+
+/* Validation states */
+input.ng-touched.ng-invalid,
+select.ng-touched.ng-invalid {
+  border-color: #e74c3c;
+}
+
+input.ng-touched.ng-valid,
+select.ng-touched.ng-valid {
+  border-color: #2ecc71;
+}
+
+/* Button */
+button {
+  width: 100%;
+  margin-top: 20px;
+  padding: 10px;
+  background: #667eea;
+  border: none;
+  color: white;
+  font-size: 16px;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: 0.3s;
+}
+
+/* Button hover */
+button:hover {
+  background: #5a67d8;
+}
+
+/* Disabled button */
+button:disabled {
+  background: #ccc;
+  cursor: not-allowed;
+}
+
+/* Responsive */
+@media (max-width: 400px) {
+  form {
+    width: 90%;
+    padding: 20px;
+  }
+}

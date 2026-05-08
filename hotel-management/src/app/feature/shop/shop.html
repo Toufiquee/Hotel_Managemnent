@@ -1,0 +1,60 @@
+<div class="shop-container">
+  <nav class="shop-navbar">
+    <div class="nav-left">
+      <a routerLink="/landing" class="logo">🍽️ FineDine</a>
+    </div>
+    <div class="nav-center">
+      <a routerLink="/shop" class="active">Shop</a>
+      <a routerLink="/landing">Home</a>
+    </div>
+    <div class="nav-right">
+      <app-cart-icon></app-cart-icon>
+    </div>
+  </nav>
+
+  <header class="shop-header">
+    <h1>Our Menu</h1>
+    <p>Explore our delicious offerings</p>
+  </header>
+
+  <nav class="category-nav">
+    <button 
+      class="category-btn" 
+      [class.active]="selectedCategory() === 'All'"
+      (click)="selectCategory('All')">
+      All
+    </button>    
+
+    @for (category of (categories | async); track category) {
+      <button 
+        class="category-btn" 
+        [class.active]="selectedCategory() === category"
+        (click)="selectCategory(category)">
+        {{ category }}
+      </button>
+    }
+    
+    
+  </nav>
+
+  <div class="products-grid">
+    @for (product of  (filteredProducts() | async); track product.id) {
+      <div class="product-card">
+        <div class="product-image">
+          <img [src]="product.image" [alt]="product.name" />
+          <span class="category-badge">{{ product.category }}</span>
+        </div>
+        <div class="product-info">
+          <h3>{{ product.name }}</h3>
+          <p>{{ product.description }}</p>
+          <div class="product-footer">
+            <span class="price">\${{ product.price.toFixed(2) }}</span>
+            <button class="add-btn" (click)="addToCart(product)">
+              Add to Cart
+            </button>
+          </div>
+        </div>
+      </div>
+    }
+  </div>
+</div>

@@ -1,0 +1,80 @@
+<div class="landing">
+
+  <!-- Navbar -->
+  <nav class="navbar">
+    <div class="nav-left">
+      <h2 class="logo">🍽️ FineDine</h2>
+    </div>
+
+    <div class="nav-center">
+      <a routerLink="/shop">Menu</a>
+      <a (click)="scrollTo('reservation')">Reservation</a>
+      <a (click)="scrollTo('reviews')">Reviews</a>
+      <a (click)="scrollTo('about')">About</a>
+    </div>
+
+    <div class="nav-right">
+      <app-cart-icon></app-cart-icon>
+      <a routerLink="/login" class="auth-btn">Login</a>
+      <a routerLink="/register" class="auth-btn">Register</a>
+    </div>
+  </nav>
+
+  <!-- Hero Section -->
+  <div class="hero">
+    <div class="hero-content">
+      <h1>Experience Luxury Dining</h1>
+      <p>Delicious food, premium ambiance, unforgettable taste</p>
+      <button class="cta-btn" (click)="scrollTo('reservation')">
+        Book a Table
+      </button>
+    </div>
+  </div>
+
+</div>
+
+<!-- MENU / PRODUCT SLIDER -->
+<section id="menu" class="section product-slider-section">
+  <h2>🍔 Our Menu</h2>
+  <p>Explore our delicious dishes</p>
+  
+  <div class="slider-container">
+    <button class="slider-btn prev" (click)="prevSlide()">&#10094;</button>
+    
+    <div class="slider-wrapper">
+      <div class="products-track" [style.transform]="'translateX(-' + (currentSlide * (100 / itemsPerView)) + '%)'">
+        @for (product of featuredProducts; track product.id) {
+          <div class="slider-product">
+            <div class="product-image">
+              <img [src]="product.image" [alt]="product.name" />
+            </div>
+            <div class="product-details">
+              <span class="category">{{ product.category }}</span>
+              <h3>{{ product.name }}</h3>
+              <span class="price">\${{ product.price.toFixed(2) }}</span>
+            </div>
+          </div>
+        }
+      </div>
+    </div>
+    
+    <button class="slider-btn next" (click)="nextSlide()">&#10095;</button>
+  </div>
+  
+  <a routerLink="/shop" class="view-all-btn">View Full Menu</a>
+</section>
+
+<!-- RESERVATION -->
+<section id="reservation" class="section">
+  <app-reservation></app-reservation>
+</section>
+
+<!-- REVIEWS -->
+<section id="reviews" class="section">
+  <app-reviews></app-reviews>
+</section>
+
+<!-- ABOUT -->
+<section id="about" class="section">
+  <app-about-us></app-about-us>
+</section>

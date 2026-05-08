@@ -1,0 +1,206 @@
+<div class="checkout-container">
+  <nav class="shop-navbar">
+    <div class="nav-left">
+      <a routerLink="/landing" class="logo">🍽️ FineDine</a>
+    </div>
+    <div class="nav-center">
+      <a routerLink="/shop">Shop</a>
+      <a routerLink="/landing">Home</a>
+    </div>
+    <div class="nav-right">
+      <app-cart-icon></app-cart-icon>
+    </div>
+  </nav>
+
+  @if (orderComplete()) {
+    <div class="order-success">
+      <div class="success-icon">✓</div>
+      <h1>Order Placed Successfully!</h1>
+      <p>Thank you for your order. You will receive a confirmation email shortly.</p>
+      <p class="order-id">Order #{{ (total() * 1000).toFixed(0) }}</p>
+      <a routerLink="/shop" class="continue-btn">Continue Shopping</a>
+    </div>
+  } @else {
+    <header class="checkout-header">
+      <h1>Checkout</h1>
+    </header>
+
+    <div class="checkout-content">
+      <div class="checkout-form">
+        <section class="form-section">
+          <h2>Contact Information</h2>
+          <div class="form-group">
+            <label for="name">Full Name *</label>
+            <input 
+              type="text" 
+              id="name" 
+              [(ngModel)]="form.name" 
+              [class.error]="errors.name"
+              placeholder="John Doe" />
+            @if (errors.name) {
+              <span class="error-msg">{{ errors.name }}</span>
+            }
+          </div>
+          <div class="form-row">
+            <div class="form-group">
+              <label for="email">Email *</label>
+              <input 
+                type="email" 
+                id="email" 
+                [(ngModel)]="form.email"
+                [class.error]="errors.email"
+                placeholder="john@example.com" />
+              @if (errors.email) {
+                <span class="error-msg">{{ errors.email }}</span>
+              }
+            </div>
+            <div class="form-group">
+              <label for="phone">Phone *</label>
+              <input 
+                type="tel" 
+                id="phone" 
+                [(ngModel)]="form.phone"
+                [class.error]="errors.phone"
+                placeholder="1234567890" />
+              @if (errors.phone) {
+                <span class="error-msg">{{ errors.phone }}</span>
+              }
+            </div>
+          </div>
+        </section>
+
+        <section class="form-section">
+          <h2>Delivery Address</h2>
+          <div class="form-group">
+            <label for="address">Street Address *</label>
+            <input 
+              type="text" 
+              id="address" 
+              [(ngModel)]="form.address"
+              [class.error]="errors.address"
+              placeholder="123 Main Street" />
+            @if (errors.address) {
+              <span class="error-msg">{{ errors.address }}</span>
+            }
+          </div>
+          <div class="form-row">
+            <div class="form-group">
+              <label for="city">City *</label>
+              <input 
+                type="text" 
+                id="city" 
+                [(ngModel)]="form.city"
+                [class.error]="errors.city"
+                placeholder="New York" />
+              @if (errors.city) {
+                <span class="error-msg">{{ errors.city }}</span>
+              }
+            </div>
+            <div class="form-group">
+              <label for="zipCode">ZIP Code *</label>
+              <input 
+                type="text" 
+                id="zipCode" 
+                [(ngModel)]="form.zipCode"
+                [class.error]="errors.zipCode"
+                placeholder="10001" />
+              @if (errors.zipCode) {
+                <span class="error-msg">{{ errors.zipCode }}</span>
+              }
+            </div>
+          </div>
+        </section>
+
+        <section class="form-section">
+          <h2>Payment Method</h2>
+          <div class="payment-options">
+            <div 
+              class="payment-option" 
+              [class.selected]="paymentMethod() === 'stripe'"
+              (click)="selectPayment('stripe')">
+              <div class="option-radio"></div>
+              <div class="option-content">
+                <span class="option-icon">💳</span>
+                <div>
+                  <h3>Pay with Card</h3>
+                  <p>Secure payment via Stripe</p>
+                </div>
+              </div>
+            </div>
+            <div 
+              class="payment-option" 
+              [class.selected]="paymentMethod() === 'cod'"
+              (click)="selectPayment('cod')">
+              <div class="option-radio"></div>
+              <div class="option-content">
+                <span class="option-icon">💵</span>
+                <div>
+                  <h3>Cash on Delivery</h3>
+                  <p>Pay when you receive your order</p>
+                </div>
+              </div>
+            </div>
+          </div>
+          
+          @if (paymentMethod() === 'stripe') {
+            <div class="stripe-info">
+              <div class="form-group">
+                <label>Card Number</label>
+                <input type="text" placeholder="4242 4242 4242 4242" maxlength="19" />
+              </div>
+              <div class="form-row">
+                <div class="form-group">
+                  <label>Expiry Date</label>
+                  <input type="text" placeholder="MM/YY" maxlength="5" />
+                </div>
+                <div class="form-group">
+                  <label>CVC</label>
+                  <input type="text" placeholder="123" maxlength="4" />
+                </div>
+              </div>
+              @if (cardError()) {
+                <span class="error-msg">{{ cardError() }}</span>
+              }
+            </div>
+          }
+        </section>
+      </div>
+
+      <div class="order-summary">
+        <h2>Order Summary</h2>
+        <div class="summary-items">
+          @for (item of cartItems(); track item.product.id) {
+            <div class="summary-item">
+              <span>{{ item.quantity }}x {{ item.product.name }}</span>
+              <span>\${{ (item.product.price * item.quantity).toFixed(2) }}</span>
+            </div>
+          }
+        </div>
+        <div class="summary-totals">
+          <div class="summary-row">
+            <span>Subtotal</span>
+            <span>\${{ total().toFixed(2) }}</span>
+          </div>
+          <div class="summary-row">
+            <span>Tax (10%)</span>
+            <span>\${{ tax.toFixed(2) }}</span>
+          </div>
+          <div class="summary-row total">
+            <span>Total</span>
+            <span>\${{ finalTotal.toFixed(2) }}</span>
+          </div>
+        </div>
+        <button 
+          class="place-order-btn" 
+          [disabled]="isProcessing()"
+          (click)="processPayment()">
+          @if (isProcessing()) {
+            <span class="spinner"></span> Processing...
+          } @else {
+            Place Order - \${{ finalTotal.toFixed(2) }}
+          }
+        </button>
+      </div>
+    </div>
+  }
+</div>

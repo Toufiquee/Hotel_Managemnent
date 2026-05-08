@@ -1,0 +1,80 @@
+<div class="about-container">
+  <div class="about-header">
+    <h1>👨‍🍳 About FineDine</h1>
+    <p class="tagline">Serving Excellence Since 1990</p>
+  </div>
+
+  <div class="about-content">
+    <div class="story-section">
+      <h2>Our Story</h2>
+      <p>
+        FineDine was founded in 1990 with a vision to provide exceptional dining experiences. 
+        Over the years, we have grown from a small family restaurant to a renowned dining destination, 
+        serving thousands of happy customers.
+      </p>
+      <p>
+        Our commitment to quality ingredients, innovative recipes, and outstanding service has made us 
+        a favorite among food enthusiasts. We believe in creating memorable moments, one meal at a time.
+      </p>
+    </div>
+
+    <div class="values-section">
+      <h2>Our Values</h2>
+      <div class="values-grid">
+        <div class="value-card">
+          <span class="value-icon">🍽️</span>
+          <h3>Quality Food</h3>
+          <p>Only the freshest ingredients make it to your plate</p>
+        </div>
+        <div class="value-card">
+          <span class="value-icon">🤝</span>
+          <h3>Warm Hospitality</h3>
+          <p>Every guest is family to us</p>
+        </div>
+        <div class="value-card">
+          <span class="value-icon">🎨</span>
+          <h3>Culinary Innovation</h3>
+          <p>Constantly evolving our menu</p>
+        </div>
+        <div class="value-card">
+          <span class="value-icon">🌿</span>
+          <h3>Sustainability</h3>
+          <p>Eco-friendly practices in everything we do</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="team-section">
+      <h2>Meet Our Team</h2>
+      <div class="team-grid">
+        @for (member of team; track member.name) {
+          <div class="team-card">
+            <div class="member-icon">{{ member.image }}</div>
+            <h3>{{ member.name }}</h3>
+            <p class="role">{{ member.role }}</p>
+            <p class="bio">{{ member.bio }}</p>
+          </div>
+        }
+      </div>
+    </div>
+
+    <div class="stats-section">
+      <div class="stat">
+        <span class="stat-number">35+</span>
+        <span class="stat-label">Years of Excellence</span>
+      </div>
+      <div class="stat">
+        <span class="stat-number">50K+</span>
+        <span class="stat-label">Happy Customers</span>
+      </div>
+      <div class="stat">
+        <span class="stat-number">100+</span>
+        <span class="stat-label">Menu Items</span>
+      </div>
+      <div class="stat">
+        <span class="stat-number">25+</span>
+        <span class="stat-label">Team Members</span>
+      </div>
+    </div>
+  </div>
+</div>

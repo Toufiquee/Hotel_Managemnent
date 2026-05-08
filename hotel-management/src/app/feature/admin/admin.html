@@ -1,0 +1,314 @@
+<div class="admin-layout" [class.sidebar-collapsed]="sidebarCollapsed()">
+  <!-- Sidebar -->
+  <aside class="admin-sidebar">
+    <div class="sidebar-header">
+      <div class="logo">
+        <span class="logo-icon">🍽️</span>
+        @if (!sidebarCollapsed()) {
+          <span class="logo-text">FineDine</span>
+        }
+      </div>
+      <button class="collapse-btn" (click)="toggleSidebar()">
+        {{ sidebarCollapsed() ? '→' : '←' }}
+      </button>
+    </div>
+
+    <nav class="sidebar-nav">
+      <a class="nav-item" [class.active]="currentView() === 'dashboard'" (click)="setView('dashboard')">
+        <span class="nav-icon">📊</span>
+        @if (!sidebarCollapsed()) {
+          <span>Dashboard</span>
+        }
+      </a>
+      <a class="nav-item" [class.active]="currentView() === 'orders'" (click)="setView('orders')">
+        <span class="nav-icon">📋</span>
+        @if (!sidebarCollapsed()) {
+          <span>Orders</span>
+        }
+      </a>
+      <a class="nav-item" [class.active]="currentView() === 'menu'" (click)="setView('menu')">
+        <span class="nav-icon">🍔</span>
+        @if (!sidebarCollapsed()) {
+          <span>Menu</span>
+        }
+      </a>
+      <a class="nav-item" [class.active]="currentView() === 'reservations'" (click)="setView('reservations')">
+        <span class="nav-icon">📅</span>
+        @if (!sidebarCollapsed()) {
+          <span>Reservations</span>
+        }
+      </a>
+      <a class="nav-item" [class.active]="currentView() === 'customers'" (click)="setView('customers')">
+        <span class="nav-icon">👥</span>
+        @if (!sidebarCollapsed()) {
+          <span>Customers</span>
+        }
+      </a>
+      <a class="nav-item" [class.active]="currentView() === 'analytics'" (click)="setView('analytics')">
+        <span class="nav-icon">📈</span>
+        @if (!sidebarCollapsed()) {
+          <span>Analytics</span>
+        }
+      </a>
+      <a class="nav-item" [class.active]="currentView() === 'settings'" (click)="setView('settings')">
+        <span class="nav-icon">⚙️</span>
+        @if (!sidebarCollapsed()) {
+          <span>Settings</span>
+        }
+      </a>
+    </nav>
+
+    <div class="sidebar-footer">
+      <a routerLink="/landing" class="nav-item logout">
+        <span class="nav-icon">🚪</span>
+        @if (!sidebarCollapsed()) {
+          <span>Logout</span>
+        }
+      </a>
+    </div>
+  </aside>
+
+  <!-- Main Content -->
+  <main class="admin-main">
+    <!-- Header -->
+    <header class="admin-header">
+      <div class="header-left">
+        <h1>{{ currentView() | titlecase }}</h1>
+      </div>
+      <div class="header-right">
+        <div class="search-box">
+          <span>🔍</span>
+          <input type="text" placeholder="Search..." />
+        </div>
+        <button class="notification-btn">
+          🔔 <span class="badge">3</span>
+        </button>
+        <div class="admin-profile">
+          <div class="avatar">A</div>
+          <span>Admin</span>
+        </div>
+      </div>
+    </header>
+
+    <!-- Dashboard View -->
+    @if (currentView() === 'dashboard') {
+      <div class="dashboard-content">
+        <!-- Stats Cards -->
+        <div class="stats-grid">
+          <div class="stat-card">
+            <div class="stat-icon revenue">💰</div>
+            <div class="stat-info">
+              <span class="stat-label">Today's Revenue</span>
+              <span class="stat-value">\${{ stats.revenue.toFixed(2) }}</span>
+              <span class="stat-change positive">+12.5%</span>
+            </div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-icon orders">📋</div>
+            <div class="stat-info">
+              <span class="stat-label">Total Orders</span>
+              <span class="stat-value">{{ stats.orders }}</span>
+              <span class="stat-change positive">+8.2%</span>
+            </div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-icon customers">👥</div>
+            <div class="stat-info">
+              <span class="stat-label">Customers</span>
+              <span class="stat-value">{{ stats.customers }}</span>
+              <span class="stat-change positive">+5.1%</span>
+            </div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-icon items">🍽️</div>
+            <div class="stat-info">
+              <span class="stat-label">Menu Items</span>
+              <span class="stat-value">{{ stats.items }}</span>
+              <span class="stat-change neutral">0%</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Quick Actions -->
+        <div class="quick-actions">
+          <button class="action-btn primary">
+            <span>➕</span> New Order
+          </button>
+          <button class="action-btn">
+            <span>🍔</span> Add Menu Item
+          </button>
+          <button class="action-btn">
+            <span>📅</span> View Reservations
+          </button>
+        </div>
+
+        <!-- Recent Orders -->
+        <div class="section-card">
+          <div class="section-header">
+            <h2>Recent Orders</h2>
+            <a class="view-all">View All →</a>
+          </div>
+          <table class="orders-table">
+            <thead>
+              <tr>
+                <th>Order ID</th>
+                <th>Customer</th>
+                <th>Items</th>
+                <th>Total</th>
+                <th>Status</th>
+                <th>Time</th>
+              </tr>
+            </thead>
+            <tbody>
+              @for (order of recentOrders; track order.id) {
+                <tr>
+                  <td>#{{ order.id }}</td>
+                  <td>{{ order.customer }}</td>
+                  <td>{{ order.items }}</td>
+                  <td>\${{ order.total.toFixed(2) }}</td>
+                  <td>
+                    <span class="status-badge" [class]="getStatusClass(order.status)">
+                      {{ order.status }}
+                    </span>
+                  </td>
+                  <td>{{ order.time }}</td>
+                </tr>
+              }
+            </tbody>
+          </table>
+        </div>
+
+        <!-- Menu Overview -->
+        <div class="section-card">
+          <div class="section-header">
+            <h2>Menu Overview</h2>
+            <a class="view-all">Manage Menu →</a>
+          </div>
+          <div class="menu-grid">
+            @for (item of menuItems; track item.id) {
+              <div class="menu-item-card">
+                <div class="menu-item-info">
+                  <h3>{{ item.name }}</h3>
+                  <span class="category">{{ item.category }}</span>
+                </div>
+                <div class="menu-item-price">\${{ item.price.toFixed(2) }}</div>
+                <div class="availability" [class.unavailable]="!item.available">
+                  {{ item.available ? 'Available' : 'Unavailable' }}
+                </div>
+              </div>
+            }
+          </div>
+        </div>
+      </div>
+    }
+
+    <!-- Orders View -->
+    @if (currentView() === 'orders') {
+      <div class="view-content">
+        <div class="filters">
+          <button class="filter-btn active">All Orders</button>
+          <button class="filter-btn">Pending</button>
+          <button class="filter-btn">Preparing</button>
+          <button class="filter-btn">Ready</button>
+          <button class="filter-btn">Delivered</button>
+        </div>
+        <div class="section-card">
+          <table class="orders-table full">
+            <thead>
+              <tr>
+                <th>Order ID</th>
+                <th>Customer</th>
+                <th>Items</th>
+                <th>Total</th>
+                <th>Status</th>
+                <th>Time</th>
+                <th>Actions</th>
+              </tr>
+            </thead>
+            <tbody>
+              @for (order of recentOrders; track order.id) {
+                <tr>
+                  <td>#{{ order.id }}</td>
+                  <td>{{ order.customer }}</td>
+                  <td>{{ order.items }}</td>
+                  <td>\${{ order.total.toFixed(2) }}</td>
+                  <td>
+                    <span class="status-badge" [class]="getStatusClass(order.status)">
+                      {{ order.status }}
+                    </span>
+                  </td>
+                  <td>{{ order.time }}</td>
+                  <td>
+                    <button class="action-icon">👁️</button>
+                    <button class="action-icon">✏️</button>
+                    <button class="action-icon">🗑️</button>
+                  </td>
+                </tr>
+              }
+            </tbody>
+          </table>
+        </div>
+      </div>
+    }
+
+    <!-- Menu Management View -->
+    @if (currentView() === 'menu') {
+      <div class="view-content">
+        <div class="menu-header">
+          <button class="add-item-btn">➕ Add New Item</button>
+        </div>
+        <div class="section-card">
+          <table class="orders-table full">
+            <thead>
+              <tr>
+                <th>Item Name</th>
+                <th>Category</th>
+                <th>Price</th>
+                <th>Availability</th>
+                <th>Actions</th>
+              </tr>
+            </thead>
+            <tbody>
+              @for (item of menuItems; track item.id) {
+                <tr>
+                  <td>{{ item.name }}</td>
+                  <td><span class="category-badge">{{ item.category }}</span></td>
+                  <td>\${{ item.price.toFixed(2) }}</td>
+                  <td>
+                    <label class="toggle-switch">
+                      <input type="checkbox" [checked]="item.available" />
+                      <span class="slider"></span>
+                    </label>
+                  </td>
+                  <td>
+                    <button class="action-icon">✏️</button>
+                    <button class="action-icon">🗑️</button>
+                  </td>
+                </tr>
+              }
+            </tbody>
+          </table>
+        </div>
+      </div>
+    }
+
+    <!-- Default fallback view -->
+    @if (currentView() !== 'dashboard' && currentView() !== 'orders' && currentView() !== 'menu') {
+      <div class="view-content">
+        <div class="placeholder-view">
+          <div class="placeholder-icon">
+            @switch (currentView()) {
+              @case ('reservations') { 📅 }
+              @case ('customers') { 👥 }
+              @case ('analytics') { 📈 }
+              @case ('settings') { ⚙️ }
+              @default { 📋 }
+            }
+          </div>
+          <h2>{{ currentView() | titlecase }}</h2>
+          <p>Manage your {{ currentView() }} from this panel</p>
+        </div>
+      </div>
+    }
+  </main>
+</div>

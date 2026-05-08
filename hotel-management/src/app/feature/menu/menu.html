@@ -1,0 +1,35 @@
+<div class="menu">      
+    <h1>Menu</h1>
+    <div class="dish-list">
+        <div class="dish-card" *ngFor="let dish of paginatedDishes" >
+        <img [src]="dish.imageUrl" alt="{{ dish.name }}" class="dish-image">
+        <h2>{{ dish.name }}</h2>                                                                                
+        <p>Category: {{ dish.category }}</p>
+        <p>Price: ${{ dish.price }}</p>
+        </div>
+    </div>
+
+    <div class="pagination-summary">
+      <p>Showing {{ pageStart }} - {{ pageEnd }} of {{ Dishes.length }} dishes</p>
+      <label>
+        Items per page:
+        <select (change)="onPageSizeChange($event)" [value]="noOfItemsPerPage">
+          <option *ngFor="let size of pageSizeOptions" [value]="size">{{ size }}</option>
+        </select>
+      </label>
+    </div>
+
+    <div class="pagination">
+      <button (click)="onPreviousPage()" [disabled]="currentPage === 1">Previous</button>
+      <button *ngFor="let page of pageNumbers" (click)="goToPage(page)" [class.active]="page === currentPage">
+        {{ page }}
+      </button>
+      <button (click)="onNextPage()" [disabled]="currentPage === totalPages">Next</button>
+    </div>
+
+    <div class="pagination-info">
+      <span>Page {{ currentPage }} of {{ totalPages }}</span>
+    </div>
+
+</div>
+

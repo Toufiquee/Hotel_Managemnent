@@ -1,0 +1,127 @@
+<div class="reservation-container">
+  <div class="reservation-header">
+    <h2>📅 Table Reservation</h2>
+    <p>Book your table in advance and guarantee your spot</p>
+  </div>
+
+  @if (!isSubmitted) {
+    <form class="reservation-form" (ngSubmit)="onSubmit()">
+      <div class="form-row">
+        <div class="form-group">
+          <label for="name">Full Name</label>
+          <input 
+            type="text" 
+            id="name" 
+            [(ngModel)]="reservation.name" 
+            name="name" 
+            placeholder="Enter your name"
+            required
+          />
+        </div>
+
+        <div class="form-group">
+          <label for="email">Email</label>
+          <input 
+            type="email" 
+            id="email" 
+            [(ngModel)]="reservation.email" 
+            name="email" 
+            placeholder="Enter your email"
+            required
+          />
+        </div>
+      </div>
+
+      <div class="form-row">
+        <div class="form-group">
+          <label for="phone">Phone Number</label>
+          <input 
+            type="tel" 
+            id="phone" 
+            [(ngModel)]="reservation.phone" 
+            name="phone" 
+            placeholder="Enter your phone number"
+            required
+          />
+        </div>
+
+        <div class="form-group">
+          <label for="guests">Number of Guests</label>
+          <select 
+            id="guests" 
+            [(ngModel)]="reservation.guests" 
+            name="guests"
+          >
+            @for (i of guestOptions; track i) {
+              <option [value]="i">{{ i }} {{ i === 1 ? 'Guest' : 'Guests' }}</option>
+            }
+          </select>
+        </div>
+      </div>
+
+      <div class="form-row">
+        <div class="form-group">
+          <label for="date">Date</label>
+          <input 
+            type="date" 
+            id="date" 
+            [(ngModel)]="reservation.date" 
+            name="date" 
+            [min]="getMinDate()"
+            required
+          />
+        </div>
+
+        <div class="form-group">
+          <label for="time">Time</label>
+          <select 
+            id="time" 
+            [(ngModel)]="reservation.time" 
+            name="time"
+            required
+          >
+            <option value="">Select a time</option>
+            @for (slot of timeSlots; track slot) {
+              <option [value]="slot">{{ slot }}</option>
+            }
+          </select>
+        </div>
+      </div>
+
+      <div class="form-group full-width">
+        <label for="specialRequests">Special Requests (Optional)</label>
+        <textarea 
+          id="specialRequests" 
+          [(ngModel)]="reservation.specialRequests" 
+          name="specialRequests" 
+          placeholder="Any special occasions, dietary requirements, or seating preferences..."
+          rows="3"
+        ></textarea>
+      </div>
+
+      <button type="submit" class="submit-btn" [disabled]="isLoading">
+        @if (isLoading) {
+          <span class="loading">Processing...</span>
+        } @else {
+          Confirm Reservation
+        }
+      </button>
+    </form>
+  } @else {
+    <div class="success-message">
+      <div class="success-icon">✓</div>
+      <h3>Reservation Confirmed!</h3>
+      <p>Thank you, {{ reservation.name }}!</p>
+      <div class="reservation-details">
+        <p><strong>Date:</strong> {{ reservation.date }}</p>
+        <p><strong>Time:</strong> {{ reservation.time }}</p>
+        <p><strong>Guests:</strong> {{ reservation.guests }}</p>
+        <p><strong>Confirmation sent to:</strong> {{ reservation.email }}</p>
+      </div>
+      <p class="guarantee-text">Your table is guaranteed! No need to worry about availability.</p>
+      <button class="submit-btn" (click)="makeAnotherReservation()">
+        Make Another Reservation
+      </button>
+    </div>
+  }
+</div>

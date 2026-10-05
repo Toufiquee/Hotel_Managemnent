@@ -289,6 +289,16 @@
   animation: fadeIn 0.3s ease;
 }
 
+.stripe-info p {
+  color: #aaa;
+  font-size: 0.9rem;
+  margin: 0 0 1rem;
+}
+
+.stripe-payment-element {
+  min-height: 120px;
+}
+
 @keyframes fadeIn {
   from {
     opacity: 0;

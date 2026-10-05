@@ -1,16 +1,4 @@
 <div class="shop-container">
-  <nav class="shop-navbar">
-    <div class="nav-left">
-      <a routerLink="/landing" class="logo">🍽️ FineDine</a>
-    </div>
-    <div class="nav-center">
-      <a routerLink="/shop" class="active">Shop</a>
-      <a routerLink="/landing">Home</a>
-    </div>
-    <div class="nav-right">
-      <app-cart-icon></app-cart-icon>
-    </div>
-  </nav>
 
   <header class="shop-header">
     <h1>Our Menu</h1>
@@ -25,7 +13,7 @@
       All
     </button>    
 
-    @for (category of (categories | async); track category) {
+     @for (category of categories(); track category) {
       <button 
         class="category-btn" 
         [class.active]="selectedCategory() === category"
@@ -38,7 +26,7 @@
   </nav>
 
   <div class="products-grid">
-    @for (product of  (filteredProducts() | async); track product.id) {
+    @for (product of filteredProducts(); track product.id) {
       <div class="product-card">
         <div class="product-image">
           <img [src]="product.image" [alt]="product.name" />

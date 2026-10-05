@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Product } from './cart.service';
-import { HttpClient } from '@angular/common/http';
-import { map, Observable } from 'rxjs';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { Observable } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
@@ -26,20 +26,43 @@ export class ProductService {
   // getProducts(): Product[] {
   //   return this.products;
   // }
-  getProducts(): Observable<Product[]>{
-    return this.http.get<Product[]>(this.apiUrl);
+  getProducts(): Observable<Product[]> {
+    const token = localStorage.getItem('token');
+    const headers = token
+      ? new HttpHeaders({ Authorization: `Bearer ${token}` })
+      : new HttpHeaders();
+
+    return this.http.get<Product[]>(this.apiUrl, { headers });
+  }
+
+  createProduct(product: Partial<Product>): Observable<any> {
+    const token = localStorage.getItem('token');
+    const headers = token
+      ? new HttpHeaders({ Authorization: `Bearer ${token}` })
+      : new HttpHeaders();
+
+    return this.http.post(this.apiUrl, product, { headers });
+  }
+
+  deleteProduct(id: number): Observable<any> {
+    const token = localStorage.getItem('token');
+    const headers = token
+      ? new HttpHeaders({ Authorization: `Bearer ${token}` })
+      : new HttpHeaders();
+
+    return this.http.delete(`${this.apiUrl}/${id}`, { headers });
   }
 
   getProductById(id: number): Product | undefined {
     return this.products.find(p => p.id === id);
   }
 
-  // getProductsByCategory(category: string): Product[] {
-  //   return this.products.filter(p => p.category === category);
-  // }
+  getProductsByCategory(category: string): Product[] {
+    return this.products.filter(p => p.category === category);
+  }
 
   getCategories(): Observable<string[]>{
-    return this.getProducts().pipe( map( products => [...new Set(products.map(p => p.category))]));
+    return this.http.get<string[]>(`${this.apiUrl}/categories`);
   }
   
 }

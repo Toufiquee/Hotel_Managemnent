@@ -1,4 +1,4 @@
-import { Component, ViewEncapsulation } from '@angular/core';
+import { Component } from '@angular/core';
 import { RouterLink } from '@angular/router';
 import { CartIcon } from '../../components/cart-icon/cart-icon';
 import { ReservationComponent } from '../reservation/reservation';
@@ -18,8 +18,7 @@ interface FeaturedProduct {
   standalone: true,
   imports: [RouterLink, CartIcon, ReservationComponent, Reviews, AboutUs],
   templateUrl: './landing.html',
-  styleUrl: './landing.css',
-  encapsulation: ViewEncapsulation.None
+  styleUrl: './landing.css'
 })
 export class Landing {
   featuredProducts: FeaturedProduct[] = [

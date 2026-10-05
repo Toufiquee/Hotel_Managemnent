@@ -31,7 +31,7 @@ namespace hotel_managment_api.Services
                 Name = model.Name,
                 Email = model.Email,
                 PasswordHash = hashedPassword,
-                Gender = model.Gender
+                Role = string.IsNullOrWhiteSpace(model.Role) ? "customer" : model.Role
             };
 
             // 💾 Save user

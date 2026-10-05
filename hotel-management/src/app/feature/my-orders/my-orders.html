@@ -1,0 +1,59 @@
+<section class="orders-page">
+  <div class="page-header">
+    <div>
+      <p class="eyebrow">Account</p>
+      <h1>My Orders</h1>
+    </div>
+    <a routerLink="/shop" class="back-link">Continue Shopping</a>
+  </div>
+
+  @if (isLoading()) {
+    <div class="state-card">Loading your orders...</div>
+  }
+
+  @if (!isLoading() && errorMessage()) {
+    <div class="state-card error">{{ errorMessage() }}</div>
+  }
+
+  @if (!isLoading() && !errorMessage() && orders().length === 0) {
+    <div class="state-card">
+      <h3>No orders yet</h3>
+      <p>Your recent purchases will appear here once you place an order.</p>
+      <a routerLink="/shop" class="primary-btn">Browse Menu</a>
+    </div>
+  }
+
+  @if (!isLoading() && !errorMessage() && orders().length > 0) {
+    <div class="orders-list">
+      @for (order of orders(); track order.id) {
+        <article class="order-card">
+          <div class="order-top">
+            <div>
+              <h3>Order #{{ order.id }}</h3>
+              <p>{{ order.orderDate | date:'medium' }}</p>
+            </div>
+            <span class="status-badge">{{ formatStatus(order.status) }}</span>
+          </div>
+
+          <div class="order-items">
+            @for (item of parseItems(order.items); track item.name + item.quantity) {
+              <div class="item-row">
+                <span>{{ item.name }} × {{ item.quantity }}</span>
+                <span>${{ item.price * item.quantity | number:'1.2-2' }}</span>
+              </div>
+            }
+          </div>
+
+          <div class="order-summary">
+            <div>
+              <strong>Delivery:</strong> {{ order.address }}, {{ order.city }}
+            </div>
+            <div>
+              <strong>Total:</strong> ${{ order.total | number:'1.2-2' }}
+            </div>
+          </div>
+        </article>
+      }
+    </div>
+  }
+</section>

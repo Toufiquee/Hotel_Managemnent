@@ -16,7 +16,7 @@ namespace hotel_managment_api.Dto
         public string Password { get; set; } = string.Empty;
 
         [Required]
-        public string Gender { get; set; } = string.Empty;
+        public string Role { get; set; } = "customer";
 
         public bool Terms { get; set; }
     }

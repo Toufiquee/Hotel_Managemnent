@@ -18,9 +18,35 @@ namespace hotel_managment_api.Repositories
             return await _context.Products.ToListAsync();
         }
 
-        public async Task<List<Product>> GetProductCategoriesAsync()
+        public async Task<List<string>> GetProductCategoriesAsync()
         {
-            return await _context.Products.Select(p => p.Category).Distinct().ToListAsync();
+            return await _context.Products.Select(p => p.category).Distinct().ToListAsync();
         }
+
+        public async Task<bool> DeleteProductAsync(int id)
+        {
+            var product = await _context.Products.FindAsync(id);
+            if(product == null) return false;
+            
+            _context.Products.Remove(product);
+            await _context.SaveChangesAsync();
+            return true;
+        }
+
+        public async Task AddProductAsync(Product newProduct)
+        {
+            var product = new Product
+            {
+                name = newProduct.name,
+                description = newProduct.description,
+                price = newProduct.price,
+                category = newProduct.category,
+                image = newProduct.image
+            };
+            
+            _context.Products.Add(product);
+            await _context.SaveChangesAsync();
+        }
+    
    }
 }

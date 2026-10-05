@@ -15,86 +15,6 @@ body {
   color: white;
 }
 
-/* Navbar */
-/* Navbar Layout */
-.navbar {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  padding: 15px 40px;
-  background: rgba(0,0,0,0.6);
-  backdrop-filter: blur(10px);
-  position: fixed;
-  top: 0;
-  width: 100%;
-  z-index: 1000;
-}
-
-/* Left */
-
-.nav-left { flex: 1; }
-
-.nav-left .logo {
-  color: #f1c40f;
-}
-
-/* Center */
-
-.nav-center { flex: 2; display: flex; justify-content: center; gap: 30px; }
-
-.nav-center a {
-  margin: 0 20px;
-  color: white;
-  text-decoration: none;
-  cursor: pointer;
-  transition: 0.3s;
-}
-
-.nav-center a:hover {
-  color: #f1c40f;
-}
-
-/* Right */
-.nav-right { flex: 1; display: flex; gap: 10px; align-items: center; }
-
-.nav-right app-cart-icon {
-  display: flex;
-}
-
-/* Buttons */
-.auth-btn {
-  background: #f1c40f;
-  padding: 6px 14px;
-  border-radius: 5px;
-  color: black;
-  font-weight: bold;
-  text-decoration: none;
-  transition: 0.3s;
-}
-
-.auth-btn:hover {
-  background: #d4af37;
-}
-.logo {
-  color: #f1c40f;
-}
-
-/* Nav links */
-.nav-links a {
-  margin: 0 15px;
-  color: white;
-  cursor: pointer;
-  text-decoration: none;
-  transition: 0.3s;
-}
-.nav-links {
-  margin: 0 auto;
-}
-
-.nav-links a:hover {
-  color: #f1c40f;
-}
-
 /* Hero */
 .hero {
   height: 100%;
@@ -295,11 +215,4 @@ body {
     opacity: 1;
     transform: translateY(0);
   }
-}
-.auth-btn {
-  background: #f1c40f;
-  padding: 6px 12px;
-  border-radius: 5px;
-  color: black !important;
-  font-weight: bold;
 }

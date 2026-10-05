@@ -572,6 +572,31 @@
   color: #6c757d;
 }
 
+/* Menu form */
+.menu-form {
+  display: grid;
+  gap: 12px;
+}
+
+.menu-form label {
+  font-weight: 600;
+  color: #1a1a2e;
+}
+
+.menu-form input,
+.menu-form textarea {
+  border: 1px solid #e5e6ea;
+  border-radius: 10px;
+  padding: 10px 12px;
+  font-size: 0.95rem;
+}
+
+.feedback-message {
+  margin-top: 12px;
+  color: #2ed573;
+  font-weight: 600;
+}
+
 /* Responsive */
 @media (max-width: 1200px) {
   .stats-grid {

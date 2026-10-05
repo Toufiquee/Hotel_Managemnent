@@ -1,7 +1,9 @@
-import { Component, signal } from '@angular/core';
+import { Component, inject, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-import { RouterLink } from '@angular/router';
+import { Router, RouterLink } from '@angular/router';
+
+import { AuthService } from '../../services/auth.service';
 
 @Component({
   selector: 'app-login',
@@ -10,7 +12,12 @@ import { RouterLink } from '@angular/router';
   templateUrl: './login.html',
   styleUrl: './login.css'
 })
+
 export class Login {
+
+  private authService = inject(AuthService);
+  private router = inject(Router);
+
   email = signal('');
   password = signal('');
   rememberMe = signal(false);
@@ -19,22 +26,47 @@ export class Login {
   showPassword = false;
 
   onSubmit() {
+
+    if (!this.email() || !this.password()) {
+      this.errorMessage.set("Please fill in all fields");
+      return;
+    }
+
     this.isLoading.set(true);
     this.errorMessage.set('');
 
-    setTimeout(() => {
-      if (!this.email() || !this.password()) {
-        this.errorMessage.set('Please fill in all fields');
+    const loginData = {
+      email: this.email(),
+      password: this.password()
+    };
+
+    this.authService.login(loginData).subscribe({
+
+      next: (response) => {
+        this.authService.setAuthState(response?.token, response?.user);
         this.isLoading.set(false);
-        return;
+
+        const role = response?.user?.role || response?.user?.Role || '';
+        this.router.navigate([role?.toString().toLowerCase() === 'admin' ? '/admin' : '/landing']);
+      },
+
+      error: (err) => {
+
+        this.isLoading.set(false);
+
+        if (err.status === 401) {
+          this.errorMessage.set("Invalid Email or Password");
+        } else {
+          this.errorMessage.set("Something went wrong.");
+        }
       }
 
-      console.log('Login attempt:', { email: this.email(), rememberMe: this.rememberMe() });
-      this.isLoading.set(false);
-    }, 1000);
+    });
+
   }
 
   clearError() {
     this.errorMessage.set('');
   }
+
 }

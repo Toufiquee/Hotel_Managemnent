@@ -1,6 +1,6 @@
-import { Component, inject, signal } from '@angular/core';
+import { Component, inject, signal, computed } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { map, Observable } from 'rxjs';
+import { toSignal } from '@angular/core/rxjs-interop';
 import { RouterLink } from '@angular/router';
 import { CartService, Product } from '../../services/cart.service';
 import { ProductService } from '../../services/product.service';
@@ -17,30 +17,20 @@ export class Shop {
   private cartService = inject(CartService);
   private productService = inject(ProductService);
   
-  products = this.productService.getProducts();
-  categories = this.productService.getCategories();
+  products = toSignal(this.productService.getProducts(), { initialValue: [] as Product[] });
+  categories = toSignal(this.productService.getCategories(), { initialValue: [] as string[] });
   selectedCategory = signal<string>('All');
   
-  filteredProducts(): Observable<Product[]> {
+   filteredProducts = computed(() => {
+    const products = this.products();
     const category = this.selectedCategory();
-    console.log('Selected Category:', category);
-    if(category === 'All')
-      return this.products;
     
-    return this.products.pipe(
-    map(products => {
-
-      console.log(products);
-
-      return products.filter(p => {
-        console.log(p.category);
-
-        return p.category === category;
-      });
-
-    })
-  );
-  }
+    if (category === 'All') {
+      return products;
+    }
+    
+    return products.filter(p => p.category === category);
+  });
 
   selectCategory(category: string): void {
     this.selectedCategory.set(category);
@@ -50,3 +40,7 @@ export class Shop {
     this.cartService.addToCart(product);
   }
 }
+
+/* 
+  How can we fetch the data category wise 
+*/

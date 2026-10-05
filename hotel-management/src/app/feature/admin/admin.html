@@ -226,7 +226,7 @@
               </tr>
             </thead>
             <tbody>
-              @for (order of recentOrders; track order.id) {
+              @for (order of allOrders; track order.id) {
                 <tr>
                   <td>#{{ order.id }}</td>
                   <td>{{ order.customer }}</td>
@@ -255,7 +255,7 @@
     @if (currentView() === 'menu') {
       <div class="view-content">
         <div class="menu-header">
-          <button class="add-item-btn">➕ Add New Item</button>
+          <button class="add-item-btn" type="button" (click)="setView('menu-form')">➕ Add New Item</button>
         </div>
         <div class="section-card">
           <table class="orders-table full">
@@ -281,8 +281,7 @@
                     </label>
                   </td>
                   <td>
-                    <button class="action-icon">✏️</button>
-                    <button class="action-icon">🗑️</button>
+                    <button class="action-icon" type="button" (click)="deleteProduct(item.id)">🗑️</button>
                   </td>
                 </tr>
               }
@@ -292,8 +291,42 @@
       </div>
     }
 
+    @if (currentView() === 'menu-form') {
+      <div class="view-content">
+        <div class="section-card">
+          <div class="section-header">
+            <h2>Add Product</h2>
+            <button class="action-btn" type="button" (click)="setView('menu')">Back to Menu</button>
+          </div>
+          <form [formGroup]="menuForm" (ngSubmit)="onSubmitMenu()" class="menu-form">
+            <label>Product Name</label>
+            <input formControlName="name" type="text" />
+
+            <label>Description</label>
+            <textarea formControlName="description"></textarea>
+
+            <label>Price</label>
+            <input formControlName="price" type="number" step="0.01" />
+
+            <label>Image URL</label>
+            <input formControlName="image" type="text" />
+
+            <label>Category</label>
+            <input formControlName="category" type="text" />
+
+            <button class="add-item-btn" type="submit" [disabled]="isSubmitting()">
+              {{ isSubmitting() ? 'Saving...' : 'Save Product' }}
+            </button>
+          </form>
+          @if (feedbackMessage()) {
+            <p class="feedback-message">{{ feedbackMessage() }}</p>
+          }
+        </div>
+      </div>
+    }
+
     <!-- Default fallback view -->
-    @if (currentView() !== 'dashboard' && currentView() !== 'orders' && currentView() !== 'menu') {
+    @if (currentView() !== 'dashboard' && currentView() !== 'orders' && currentView() !== 'menu' && currentView() !== 'menu-form') {
       <div class="view-content">
         <div class="placeholder-view">
           <div class="placeholder-icon">

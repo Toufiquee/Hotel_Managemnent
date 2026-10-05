@@ -1,0 +1,42 @@
+<nav class="navbar">
+  <div class="nav-left">
+    <h2 class="logo">🍽️ FineDine</h2>
+  </div>
+
+  <div class="nav-center">
+    <a routerLink="/shop">Menu</a>
+    <a routerLink="/landing" fragment="reservation">Reservation</a>
+    <a routerLink="/landing" fragment="reviews">Reviews</a>
+    <a routerLink="/landing" fragment="about">About</a>
+  </div>
+
+  <div class="nav-right">
+    <app-cart-icon></app-cart-icon>
+
+    <ng-container *ngIf="!isLoggedIn; else profileMenu">
+      <a routerLink="/login" class="auth-btn">Login</a>
+      <a routerLink="/register" class="auth-btn">Register</a>
+    </ng-container>
+
+    <ng-template #profileMenu>
+      <div class="profile-menu">
+        <button type="button" class="profile-trigger" (click)="toggleDropdown()">
+          <div class="avatar">{{ userInitials }}</div>
+          <div class="profile-meta">
+            <span class="profile-name">{{ userName }}</span>
+            <span class="profile-label">Account</span>
+          </div>
+          <span class="dropdown-arrow">▾</span>
+        </button>
+
+        <div class="profile-dropdown" *ngIf="showDropdown">
+          <a routerLink="/landing" class="dropdown-item" (click)="closeDropdown()">My Profile</a>
+          <a routerLink="/my-orders" class="dropdown-item" (click)="closeDropdown()">My Orders</a>
+          <a routerLink="/landing" fragment="reservation" class="dropdown-item" (click)="closeDropdown()">Reservations</a>
+          <a *ngIf="isAdmin" routerLink="/admin" class="dropdown-item" (click)="closeDropdown()">Admin Panel</a>
+          <button type="button" class="dropdown-item logout-item" (click)="logout()">Logout</button>
+        </div>
+      </div>
+    </ng-template>
+  </div>
+</nav>
